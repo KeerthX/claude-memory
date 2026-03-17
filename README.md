@@ -1,54 +1,136 @@
-# claude-memory
+# memclaude
 
-Persistent memory for Claude Code. Automatically saves every session and
-restores context when you return to a project.
+**Persistent memory for Claude Code.** Automatically saves every session and loads your project context when you come back.
+
+Claude Code forgets everything when you close it. memclaude fixes that — silently, automatically, with no changes to how you work.
+
+---
 
 ## Install
+
 ```bash
-npm install -g claudemem
+npm install -g memclaude
 ```
 
-Requires [Claude Code](https://www.npmjs.com/package/@anthropic-ai/claude-code) to be installed first.
+Then run the setup command once (requires Administrator on Windows):
 
-## Usage
-
-Just use `claude` as normal. Memory works automatically.
 ```bash
-cd my-project
-claude
-# claude-memory: context loaded for "my-project"
-# ... your session runs ...
-# claude-memory: 4 messages saved
+claude-mem install
 ```
 
-First time in a project, a memory file is created. Every session after
-that, context is loaded before Claude starts and saved after it ends.
+That's it. From now on, typing `claude` in any project folder automatically loads and saves memory.
 
-## Commands
-```bash
-cmem list              # all projects with memory
-cmem show              # full memory for current project
-cmem show --context    # context section only
-cmem show --log        # session log only
-cmem clear             # clear context (keep log)
-cmem clear --log       # clear log (keep context)
-cmem clear --all       # clear everything
-cmem delete            # delete memory for this project
-cmem delete --all      # delete all memories
-cmem config            # change settings
-cmem open              # open memory file in editor
-```
+---
 
 ## How it works
 
-- Memory is stored in `~/.claude-memory/projects/` — never in your repo
-- Each project gets one `memory.md` file with a context section and session log
-- Context is injected via `CLAUDE.md` before each session and cleaned up after
-- Session content is read from Claude Code's own session files
+When you type `claude`:
 
-## Uninstall
-```bash
-npm uninstall -g claude-memory
+1. memclaude checks if this project has a memory file
+2. If it does, it injects your saved context into `CLAUDE.md` before Claude starts — so Claude already knows your stack, decisions, and what you were working on
+3. Your session runs normally
+4. When you close Claude, memclaude reads what happened and saves it to your memory file
+5. Next session, Claude picks up right where you left off
+
+Memory is stored in `~/.claude-memory/projects/` — completely outside your repo, never committed to git.
+
+---
+
+## First time in a project
+
+```
+$ claude
+claude-memory: memory enabled for "my-app"
 ```
 
-Your memories stay at `~/.claude-memory/projects` until you delete them.
+A memory file is created for this project. After your first session, context is captured automatically.
+
+---
+
+## Returning to a project
+
+```
+$ claude
+claude-memory: context loaded for "my-app"
+```
+
+Claude starts the session already knowing:
+- Your stack and tools
+- What you were working on last time
+- Files you changed
+- Decisions you made
+
+---
+
+## Managing memory
+
+```bash
+cmem list              # see all projects with memory
+cmem show              # view full memory for current project
+cmem show --context    # view only the context Claude sees
+cmem show --log        # view only the session history
+cmem clear             # clear context (keep session log)
+cmem clear --log       # clear session log (keep context)
+cmem clear --all       # wipe everything for this project
+cmem delete            # delete memory for current project
+cmem delete --all      # delete ALL memories
+cmem open              # open memory file in your editor
+cmem config            # change settings
+cmem config --show     # view current settings
+```
+
+---
+
+## Memory file format
+
+Each project gets one `memory.md` file with two sections:
+
+```markdown
+# claude-memory: my-app
+Path: /Users/you/projects/my-app
+Last session: 2026-03-17
+
+---
+## Context
+Last task: building the auth flow
+Files changed: auth.js, middleware.js
+Last summary: OAuth callback fixed, starting email verification
+
+---
+## Session log
+
+### 2026-03-17 14:32  (~12 min)
+
+**You:** fix the redirect loop in the OAuth callback
+**Claude:** The issue is in your callback handler...
+
+**You:** now start on email verification
+**Claude:** For email verification you'll want to...
+```
+
+The context section is what Claude reads at the start of each session. The session log is your full history.
+
+---
+
+## Uninstall
+
+```bash
+claude-mem uninstall
+npm uninstall -g memclaude
+```
+
+`claude-mem uninstall` restores the original `claude` command. Your memories stay at `~/.claude-memory/projects` until you delete them with `cmem delete --all`.
+
+---
+
+## Requirements
+
+- Node.js 18 or higher
+- [Claude Code](https://www.npmjs.com/package/@anthropic-ai/claude-code) installed globally
+- Windows: run `claude-mem install` as Administrator
+
+---
+
+## License
+
+MIT

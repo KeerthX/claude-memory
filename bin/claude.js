@@ -12,17 +12,12 @@ const { getLatestSession } = require('../src/capture')
 const { getProjectId } = require('../src/identify')
 
 function findRealClaude() {
-    const REAL_CLAUDE = 'C:\\nvm4w\\nodejs\\node_modules\\@anthropic-ai\\claude-code\\cli.js'
-    if (require('fs').existsSync(REAL_CLAUDE)) return REAL_CLAUDE
-
-    // Generic fallback — find it relative to npm global root
     try {
         const { execSync } = require('child_process')
         const root = execSync('npm root -g', { encoding: 'utf8' }).trim()
         const p = require('path').join(root, '@anthropic-ai', 'claude-code', 'cli.js')
         if (require('fs').existsSync(p)) return p
     } catch { }
-
     return null
 }
 

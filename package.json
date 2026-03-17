@@ -17,11 +17,11 @@
     "context",
     "developer-tools"
   ],
-  "author": "your-npm-username",
+  "author": "keerthjm",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/claude-memory"
+    "url": "https://github.com/KeerthX/claude-memory"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -44,6 +44,16 @@ async function main() {
         return
     }
 
+    if (command === 'install') {
+        require('../scripts/install')
+        return
+    }
+
+    if (command === 'uninstall') {
+        require('../scripts/uninstall')
+        return
+    }
+
     if (command === 'list') {
         const config = readConfig()
         if (!config) { console.log('Not set up. Run claude first.'); return }

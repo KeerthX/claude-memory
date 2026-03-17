@@ -1,0 +1,32 @@
+{
+  "name": "claude-memory",
+  "version": "1.0.0",
+  "description": "Persistent memory for Claude Code — automatically saves and restores project context across sessions",
+  "bin": {
+    "claude-mem": "bin/claude.js",
+    "cmem": "bin/cmem.js"
+  },
+  "scripts": {
+    "test": "echo no tests yet"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "memory",
+    "ai",
+    "context",
+    "developer-tools"
+  ],
+  "author": "your-npm-username",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/claude-memory"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/claude-code": "*"
+  }
+}

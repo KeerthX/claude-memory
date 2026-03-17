@@ -1,5 +1,5 @@
 {
-  "name": "claude-memory",
+  "name": "claudemem",
   "version": "1.0.0",
   "description": "Persistent memory for Claude Code — automatically saves and restores project context across sessions",
   "bin": {

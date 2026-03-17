@@ -5,7 +5,7 @@ restores context when you return to a project.
 
 ## Install
 ```bash
-npm install -g claude-memory
+npm install -g claudemem
 ```
 
 Requires [Claude Code](https://www.npmjs.com/package/@anthropic-ai/claude-code) to be installed first.

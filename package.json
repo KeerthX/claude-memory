@@ -1,6 +1,6 @@
 {
-  "name": "claudemem",
-  "version": "1.0.0",
+  "name": "memclaude",
+  "version": "1.0.2",
   "description": "Persistent memory for Claude Code — automatically saves and restores project context across sessions",
   "bin": {
     "claude-mem": "bin/claude.js",

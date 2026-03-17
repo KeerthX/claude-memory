@@ -5,8 +5,21 @@ const path = require('path')
 function findClaudeCli() {
     try {
         const root = execSync('npm root -g', { encoding: 'utf8' }).trim()
-        const p = path.join(root, '@anthropic-ai', 'claude-code', 'cli.js')
-        if (fs.existsSync(p)) return { root, cli: p }
+
+        // Check top level first
+        const topLevel = path.join(root, '@anthropic-ai', 'claude-code', 'cli.js')
+        if (fs.existsSync(topLevel)) return { root, cli: topLevel }
+
+        // Check nested inside memclaude
+        const nested = path.join(root, 'memclaude', 'node_modules', '@anthropic-ai', 'claude-code', 'cli.js')
+        if (fs.existsSync(nested)) return { root, cli: nested }
+
+        // Search all packages for cli.js
+        const packages = fs.readdirSync(root)
+        for (const pkg of packages) {
+            const p = path.join(root, pkg, 'node_modules', '@anthropic-ai', 'claude-code', 'cli.js')
+            if (fs.existsSync(p)) return { root, cli: p }
+        }
     } catch { }
     return null
 }

@@ -15,12 +15,24 @@ function findRealClaude() {
     try {
         const { execSync } = require('child_process')
         const root = execSync('npm root -g', { encoding: 'utf8' }).trim()
-        const p = require('path').join(root, '@anthropic-ai', 'claude-code', 'cli.js')
-        if (require('fs').existsSync(p)) return p
+
+        // Top level
+        const topLevel = require('path').join(root, '@anthropic-ai', 'claude-code', 'cli.js')
+        if (require('fs').existsSync(topLevel)) return topLevel
+
+        // Nested inside memclaude
+        const nested = require('path').join(root, 'memclaude', 'node_modules', '@anthropic-ai', 'claude-code', 'cli.js')
+        if (require('fs').existsSync(nested)) return nested
+
+        // Search all packages
+        const packages = require('fs').readdirSync(root)
+        for (const pkg of packages) {
+            const p = require('path').join(root, pkg, 'node_modules', '@anthropic-ai', 'claude-code', 'cli.js')
+            if (require('fs').existsSync(p)) return p
+        }
     } catch { }
     return null
 }
-
 function buildContext(entries) {
     const userMsgs = entries.filter(e => e.role === 'User').map(e => e.text)
     const claudeMsgs = entries.filter(e => e.role === 'Claude').map(e => e.text)
